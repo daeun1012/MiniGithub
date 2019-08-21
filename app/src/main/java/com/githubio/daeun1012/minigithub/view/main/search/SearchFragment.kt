@@ -19,6 +19,7 @@ import com.githubio.daeun1012.minigithub.AppExecutors
 import com.githubio.daeun1012.minigithub.R
 import com.githubio.daeun1012.minigithub.databinding.FragmentSearchBinding
 import com.githubio.daeun1012.minigithub.di.ViewModelFactory
+import com.githubio.daeun1012.minigithub.view.util.FragmentDataBindingComponent
 import com.githubio.daeun1012.minigithub.view.util.RetryCallback
 import com.githubio.daeun1012.minigithub.view.util.autoCleared
 import com.google.android.material.snackbar.Snackbar
@@ -33,6 +34,8 @@ class SearchFragment : DaggerFragment() {
 
     @Inject
     lateinit var appExecutors: AppExecutors
+
+    var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
     private val viewModel: SearchViewModel by viewModels {
         viewModelFactory
@@ -49,7 +52,7 @@ class SearchFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false, dataBindingComponent)
         return binding.root
     }
 
@@ -58,6 +61,7 @@ class SearchFragment : DaggerFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         initRecyclerView()
         val rvAdapter = SearchListAdapter(
+                dataBindingComponent = dataBindingComponent,
                 appExecutors = appExecutors
         )
         binding.query = viewModel.query

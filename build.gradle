@@ -29,4 +29,5 @@ task clean(type: Delete) {
 ext {
     fragment_version = "1.2.0-alpha02"
     lifecycle_version = "2.2.0-alpha03"
+    glide_version = "4.8.0"
 }

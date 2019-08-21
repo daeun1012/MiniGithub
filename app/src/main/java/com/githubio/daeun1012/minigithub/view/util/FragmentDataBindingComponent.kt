@@ -14,26 +14,16 @@
  * limitations under the License.
  */
 
-package com.githubio.daeun1012.minigithub.data.local
+package com.githubio.daeun1012.minigithub.view.util
 
-
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import com.githubio.daeun1012.minigithub.data.local.dao.UserDao
-import com.githubio.daeun1012.minigithub.data.remote.models.User
-import com.githubio.daeun1012.minigithub.data.remote.models.UserSearchResult
+import androidx.databinding.DataBindingComponent
+import androidx.fragment.app.Fragment
 
 /**
- * Main database description.
+ * A Data Binding Component implementation for fragments.
  */
-@Database(
-    entities = [
-        User::class,
-        UserSearchResult::class],
-    version = 3,
-    exportSchema = false
-)
-abstract class GithubDb : RoomDatabase() {
+class FragmentDataBindingComponent(fragment: Fragment) : DataBindingComponent {
+    private val adapter = FragmentBindingAdapters(fragment)
 
-    abstract fun userDao(): UserDao
+     override fun getFragmentBindingAdapters() = adapter
 }
