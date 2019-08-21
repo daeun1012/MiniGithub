@@ -47,6 +47,9 @@ abstract class UserDao {
     @Delete
     abstract fun unLike(user: LikeUser)
 
+    @Update
+    abstract fun updateUser(user: User)
+
     @Query("SELECT * FROM user WHERE login = :login")
     abstract fun findByLogin(login: String): LiveData<User>
 

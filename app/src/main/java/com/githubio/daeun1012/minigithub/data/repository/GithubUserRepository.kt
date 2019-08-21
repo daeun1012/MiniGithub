@@ -44,11 +44,15 @@ class GithubUserRepository @Inject constructor(
 
     fun likeUser(user: User) {
         appExecutors.diskIO().execute {
-            if (user.isLike) {
-                db.userDao().like(LikeUser(user.id, user.login, user.avatarUrl, user.company, user.reposUrl, user.blog, user.score))
-            } else {
-                db.userDao().unLike(LikeUser(user.id, user.login, user.avatarUrl, user.company, user.reposUrl, user.blog, user.score))
+            db.runInTransaction {
+                db.userDao().updateUser(user)
+                if (user.isLike) {
+                    db.userDao().like(LikeUser(user.id, user.login, user.avatarUrl, user.company, user.reposUrl, user.blog, user.score))
+                } else {
+                    db.userDao().unLike(LikeUser(user.id, user.login, user.avatarUrl, user.company, user.reposUrl, user.blog, user.score))
+                }
             }
+
         }
     }
 
