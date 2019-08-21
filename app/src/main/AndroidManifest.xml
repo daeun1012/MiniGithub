@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.githubio.daeun1012.minigithub">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MiniGithubApp"
         android:allowBackup="true"

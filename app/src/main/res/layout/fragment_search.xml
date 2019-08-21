@@ -5,9 +5,33 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.githubio.daeun1012.minigithub.data.remote.models.User" />
+
+        <import type="java.util.List" />
+
+        <import type="com.githubio.daeun1012.minigithub.data.remote.models.Status" />
+
+        <import type="com.githubio.daeun1012.minigithub.data.remote.models.Resource" />
+
+        <import type="androidx.lifecycle.LiveData" />
+
         <variable
-            name="viewModel"
-            type="com.githubio.daeun1012.minigithub.view.main.search.SearchViewModel" />
+            name="query"
+            type="LiveData&lt;String>" />
+
+        <variable
+            name="loadingMore"
+            type="boolean" />
+
+        <variable
+            name="searchResult"
+            type="LiveData&lt;Resource&lt;List&lt;User>>>" />
+
+        <variable
+            name="callback"
+            type="com.githubio.daeun1012.minigithub.view.util.RetryCallback" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,23 +39,78 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
-            android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="textNoSuggestions" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ProgressBar
+            android:id="@+id/load_more_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{loadingMore ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/user_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/load_more_bar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+            tools:listitem="@layout/item_search" />
+
+        <TextView
+            android:id="@+id/no_results_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/empty_search_result(query)}"
+            android:visibility="@{searchResult.status == Status.SUCCESS &amp;&amp; searchResult.data.size == 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteY="247dp" />
+
+        <include
+            layout="@layout/view_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:callback="@{() -> callback.retry()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_view"
-            tools:listitem="@layout/item_search" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:resource="@{(Resource) searchResult}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

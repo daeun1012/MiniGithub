@@ -5,4 +5,9 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="search_hint">유저를 검색하세요</string>
+    <string name="retry">재시도</string>
+    <string name="empty_search_result"><b>%s</b> 검색 결과가 없습니다.</string>
+    <string name="unknown_error">Unknown Error</string>
 </resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.githubio.daeun1012.minigithub.data.remote.models.Resource" />
+
+        <import type="com.githubio.daeun1012.minigithub.data.remote.models.Status" />
+
+        <variable
+            name="resource"
+            type="Resource" />
+
+        <variable
+            name="callback"
+            type="com.githubio.daeun1012.minigithub.view.util.RetryCallback" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/default_margin"
+        android:visibility="@{resource.data == null ? View.VISIBLE : View.GONE}">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:visibility="@{resource.status == Status.LOADING ? View.VISIBLE : View.GONE}" />
+
+        <Button
+            android:id="@+id/retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> callback.retry()}"
+            android:text="@string/retry"
+            android:visibility="@{resource.status == Status.ERROR ? View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:id="@+id/error_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{resource.message ?? @string/unknown_error}"
+            android:visibility="@{resource.status == Status.ERROR ? View.VISIBLE : View.GONE}" />
+    </LinearLayout>
+</layout>
+
