@@ -56,6 +56,10 @@ class GithubUserRepository @Inject constructor(
         }
     }
 
+    fun getAllLikes(): LiveData<List<LikeUser>> {
+        return db.userDao().getAllLikes()
+    }
+
     fun search(query: String): LiveData<Resource<List<User>>> {
         return object : NetworkBoundResource<List<User>, UserSearchResponse>(appExecutors) {
 

@@ -10,7 +10,7 @@ import com.githubio.daeun1012.minigithub.util.AbsentLiveData
 import java.util.*
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(val userRepository: GithubUserRepository) : ViewModel() {
+class SearchViewModel @Inject constructor(private val userRepository: GithubUserRepository) : ViewModel() {
 
     private val _query = MutableLiveData<String>()
     private val nextPageHandler = NextPageHandler(userRepository)

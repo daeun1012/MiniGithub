@@ -76,4 +76,7 @@ abstract class UserDao {
 
     @Query("SELECT * FROM User WHERE id in (:userIds)")
     protected abstract fun loadById(userIds: List<Int>): LiveData<List<User>>
+
+    @Query("SELECT * FROM LikeUser")
+    abstract fun getAllLikes(): LiveData<List<LikeUser>>
 }
