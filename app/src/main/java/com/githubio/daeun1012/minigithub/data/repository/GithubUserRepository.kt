@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.githubio.daeun1012.minigithub.AppExecutors
 import com.githubio.daeun1012.minigithub.data.local.GithubDb
+import com.githubio.daeun1012.minigithub.data.local.LikeUser
 import com.githubio.daeun1012.minigithub.data.local.dao.UserDao
 import com.githubio.daeun1012.minigithub.data.remote.ApiSuccessResponse
 import com.githubio.daeun1012.minigithub.data.remote.GithubService
@@ -39,6 +40,16 @@ class GithubUserRepository @Inject constructor(
         )
         appExecutors.networkIO().execute(fetchNextSearchPageTask)
         return fetchNextSearchPageTask.liveData
+    }
+
+    fun likeUser(user: User) {
+        appExecutors.diskIO().execute {
+            if (user.isLike) {
+                db.userDao().like(LikeUser(user.id, user.login, user.avatarUrl, user.company, user.reposUrl, user.blog, user.score))
+            } else {
+                db.userDao().unLike(LikeUser(user.id, user.login, user.avatarUrl, user.company, user.reposUrl, user.blog, user.score))
+            }
+        }
     }
 
     fun search(query: String): LiveData<Resource<List<User>>> {

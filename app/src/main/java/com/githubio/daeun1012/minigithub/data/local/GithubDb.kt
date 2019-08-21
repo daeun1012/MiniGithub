@@ -29,8 +29,9 @@ import com.githubio.daeun1012.minigithub.data.remote.models.UserSearchResult
 @Database(
     entities = [
         User::class,
+        LikeUser::class,
         UserSearchResult::class],
-    version = 3,
+    version = 6,
     exportSchema = false
 )
 abstract class GithubDb : RoomDatabase() {

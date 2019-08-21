@@ -10,12 +10,12 @@ import com.githubio.daeun1012.minigithub.util.AbsentLiveData
 import java.util.*
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(userRepository: GithubUserRepository) : ViewModel() {
+class SearchViewModel @Inject constructor(val userRepository: GithubUserRepository) : ViewModel() {
 
     private val _query = MutableLiveData<String>()
     private val nextPageHandler = NextPageHandler(userRepository)
 
-    val query : LiveData<String> = _query
+    val query: LiveData<String> = _query
 
     val results: LiveData<Resource<List<User>>> = Transformations
             .switchMap(_query) { search ->
@@ -41,6 +41,10 @@ class SearchViewModel @Inject constructor(userRepository: GithubUserRepository) 
         _query.value?.let {
             _query.value = it
         }
+    }
+
+    fun likeUser(user: User) {
+        userRepository.likeUser(user)
     }
 
     fun setQuery(originalInput: String) {

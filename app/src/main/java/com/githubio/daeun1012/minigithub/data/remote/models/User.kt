@@ -34,5 +34,6 @@ data class User(
         @field:SerializedName("blog")
         val blog: String?,
         @field:SerializedName("score")
-        val score: Float
+        val score: Float,
+        var isLike: Boolean
 )

@@ -63,7 +63,11 @@ class SearchFragment : DaggerFragment() {
         val rvAdapter = SearchListAdapter(
                 dataBindingComponent = dataBindingComponent,
                 appExecutors = appExecutors
-        )
+        ) { user ->
+            // save user
+            viewModel.likeUser(user)
+        }
+
         binding.query = viewModel.query
         binding.userList.adapter = rvAdapter
         adapter = rvAdapter

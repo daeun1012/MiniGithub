@@ -19,12 +19,11 @@ package com.githubio.daeun1012.minigithub.data.local.dao
 import android.util.SparseIntArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import com.githubio.daeun1012.minigithub.data.local.LikeUser
 import com.githubio.daeun1012.minigithub.data.remote.models.User
 import com.githubio.daeun1012.minigithub.data.remote.models.UserSearchResult
+import io.reactivex.Completable
 import java.util.*
 
 /**
@@ -34,13 +33,19 @@ import java.util.*
 abstract class UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(user: User)
+    abstract fun insert(user: User): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(result: UserSearchResult)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertUsers(users: List<User>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun like(user: LikeUser)
+
+    @Delete
+    abstract fun unLike(user: LikeUser)
 
     @Query("SELECT * FROM user WHERE login = :login")
     abstract fun findByLogin(login: String): LiveData<User>
