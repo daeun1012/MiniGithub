@@ -68,6 +68,7 @@ class SearchFragment : DaggerFragment() {
             viewModel.likeUser(user)
         }
 
+        binding.fragment = this
         binding.query = viewModel.query
         binding.userList.adapter = rvAdapter
         adapter = rvAdapter
@@ -133,7 +134,7 @@ class SearchFragment : DaggerFragment() {
         }
     }
 
-    private fun doSearch(v: View) {
+    fun doSearch(v: View) {
         val query = binding.input.text.toString()
         // Dismiss keyboard
         dismissKeyboard(v.windowToken)
