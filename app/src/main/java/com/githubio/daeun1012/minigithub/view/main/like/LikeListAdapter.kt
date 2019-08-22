@@ -39,15 +39,16 @@ class LikeListAdapter(
         )
         binding.root.setOnClickListener {
             binding.user?.let {
+                it.isLike = !it.isLike
                 userClickCallback?.invoke(it)
-                notifyItemRemoved(binding.root.getTag(123) as Int)
+                notifyItemRemoved(binding.root.getTag(binding.root.id) as Int)
             }
         }
         return binding
     }
 
     override fun bind(binding: ItemUserBinding, item: LikeUser, position: Int) {
-        binding.root.setTag(123, position)
+        binding.root.setTag(binding.root.id, position)
         binding.user = User(item.id, item.login, item.avatarUrl, item.company, item.reposUrl, item.blog, item.score, isLike = true)
         binding.tvName.text = item.login
         binding.tvScore.text = item.score.toString()

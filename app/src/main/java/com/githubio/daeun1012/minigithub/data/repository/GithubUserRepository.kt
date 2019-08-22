@@ -1,5 +1,6 @@
 package com.githubio.daeun1012.minigithub.data.repository
 
+import android.util.SparseIntArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.githubio.daeun1012.minigithub.AppExecutors
@@ -74,6 +75,7 @@ class GithubUserRepository @Inject constructor(
                 db.runInTransaction {
                     userDao.insertUsers(item.items)
                     userDao.insert(repoSearchResult)
+
                 }
             }
 
@@ -84,7 +86,15 @@ class GithubUserRepository @Inject constructor(
                     if (searchData == null) {
                         AbsentLiveData.create()
                     } else {
-                        userDao.loadOrdered(searchData.userIds)
+                        val likeIds = userDao.getAllLikes().value?.map {
+                            it.id
+                        }
+
+                        if(likeIds != null) {
+                            userDao.updateLikeUser(true, likeIds)
+                        }
+//                        userDao.loadOrdered(searchData.userIds)
+                        userDao.loadById(searchData.userIds)
                     }
                 }
             }

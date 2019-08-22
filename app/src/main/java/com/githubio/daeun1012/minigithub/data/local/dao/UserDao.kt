@@ -59,12 +59,12 @@ abstract class UserDao {
     @Query("SELECT * FROM UserSearchResult WHERE `query` = :query")
     abstract fun search(query: String): LiveData<UserSearchResult>
 
-    fun loadOrdered(repoIds: List<Int>): LiveData<List<User>> {
+    fun loadOrdered(userIds: List<Int>): LiveData<List<User>> {
         val order = SparseIntArray()
-        repoIds.withIndex().forEach {
+        userIds.withIndex().forEach {
             order.put(it.value, it.index)
         }
-        return Transformations.map(loadById(repoIds)) { repositories ->
+        return Transformations.map(loadById(userIds)) { repositories ->
             Collections.sort(repositories) { r1, r2 ->
                 val pos1 = order.get(r1.id)
                 val pos2 = order.get(r2.id)
@@ -74,8 +74,14 @@ abstract class UserDao {
         }
     }
 
+    @Query("UPDATE User SET isLike = :isLike WHERE id in (:likeIds)")
+    abstract fun updateLikeUser(isLike: Boolean, likeIds: List<Int>)
+
     @Query("SELECT * FROM User WHERE id in (:userIds)")
-    protected abstract fun loadById(userIds: List<Int>): LiveData<List<User>>
+    abstract fun loadById(userIds: List<Int>): LiveData<List<User>>
+
+    @Query("SELECT * FROM LikeUser WHERE id in (:userIds)")
+    abstract fun findByIdLikeUser(userIds: List<Int>): LiveData<LikeUser>
 
     @Query("SELECT * FROM LikeUser")
     abstract fun getAllLikes(): LiveData<List<LikeUser>>
