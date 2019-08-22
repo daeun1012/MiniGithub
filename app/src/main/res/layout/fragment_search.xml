@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
         <import type="android.view.View" />
 
         <import type="com.githubio.daeun1012.minigithub.data.remote.models.User" />
@@ -18,8 +20,8 @@
         <import type="androidx.lifecycle.LiveData" />
 
         <variable
-            name="fragment"
-            type="com.githubio.daeun1012.minigithub.view.main.search.SearchFragment" />
+            name="viewModel"
+            type="com.githubio.daeun1012.minigithub.view.main.search.SearchViewModel" />
 
         <variable
             name="query"
@@ -60,15 +62,28 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textNoSuggestions"
+                android:paddingEnd="20dp"
+                android:text="@={viewModel.queryStr}" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@null"
+            android:onClick="@{() -> viewModel.clearSearchText()}"
+            android:src="@drawable/ic_clear_black_24dp"
+            android:visibility="@{TextUtils.isEmpty(viewModel.queryStr) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/textInputLayout3"
+            app:layout_constraintEnd_toEndOf="@id/textInputLayout3"
+            app:layout_constraintTop_toTopOf="@id/textInputLayout3" />
 
         <Button
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.setQuery(viewModel.queryStr)}"
             android:text="검색"
-            android:onClick="@{(v) -> fragment.doSearch(v)}"
             app:layout_constraintBottom_toBottomOf="@id/textInputLayout3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/textInputLayout3"

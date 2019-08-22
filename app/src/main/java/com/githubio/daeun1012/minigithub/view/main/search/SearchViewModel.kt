@@ -1,5 +1,6 @@
 package com.githubio.daeun1012.minigithub.view.main.search
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.githubio.daeun1012.minigithub.data.remote.models.Resource
@@ -29,6 +30,8 @@ class SearchViewModel @Inject constructor(private val userRepository: GithubUser
     val loadMoreStatus: LiveData<LoadMoreState>
         get() = nextPageHandler.loadMoreState
 
+    val queryStr: ObservableField<String> = ObservableField("")
+
     fun loadNextPage() {
         _query.value?.let {
             if (it.isNotBlank()) {
@@ -54,6 +57,10 @@ class SearchViewModel @Inject constructor(private val userRepository: GithubUser
         }
         nextPageHandler.reset()
         _query.value = input
+    }
+
+    fun clearSearchText() {
+        queryStr.set("")
     }
 
     class LoadMoreState(val isRunning: Boolean, val errorMessage: String?) {
