@@ -41,7 +41,7 @@ class LikeListAdapter(
             binding.user?.let {
                 it.isLike = !it.isLike
                 userClickCallback?.invoke(it)
-                notifyItemRemoved(binding.root.getTag(binding.root.id) as Int)
+                notifyDataSetChanged()
             }
         }
         return binding

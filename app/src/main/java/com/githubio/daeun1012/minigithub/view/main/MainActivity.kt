@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil
 import com.githubio.daeun1012.minigithub.R
 import com.githubio.daeun1012.minigithub.databinding.ActivityMainBinding
 import com.githubio.daeun1012.minigithub.di.ViewModelFactory
+import com.githubio.daeun1012.minigithub.view.main.search.SearchFragment
 import com.githubio.daeun1012.minigithub.view.util.vm
 import com.google.android.material.tabs.TabLayout
 import dagger.android.AndroidInjection
@@ -37,5 +38,13 @@ class MainActivity : DaggerAppCompatActivity(){
         binding.container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabs))
         binding.tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(binding.container))
 
+    }
+
+    public fun refreshSearchFragment() {
+        for(fragment in supportFragmentManager.fragments) {
+            if(fragment is SearchFragment) {
+                fragment.viewModel.refresh()
+            }
+        }
     }
 }

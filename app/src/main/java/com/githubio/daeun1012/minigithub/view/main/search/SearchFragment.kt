@@ -37,7 +37,7 @@ class SearchFragment : DaggerFragment() {
 
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
-    private val viewModel: SearchViewModel by viewModels {
+    val viewModel: SearchViewModel by viewModels {
         viewModelFactory
     }
 
@@ -79,6 +79,11 @@ class SearchFragment : DaggerFragment() {
                 viewModel.refresh()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 
     private fun initRecyclerView() {

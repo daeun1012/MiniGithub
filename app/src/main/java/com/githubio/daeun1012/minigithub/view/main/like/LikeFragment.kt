@@ -13,7 +13,7 @@ import com.githubio.daeun1012.minigithub.AppExecutors
 import com.githubio.daeun1012.minigithub.R
 import com.githubio.daeun1012.minigithub.databinding.FragmentLikeBinding
 import com.githubio.daeun1012.minigithub.di.ViewModelFactory
-import com.githubio.daeun1012.minigithub.view.main.search.SearchListAdapter
+import com.githubio.daeun1012.minigithub.view.main.MainActivity
 import com.githubio.daeun1012.minigithub.view.util.FragmentDataBindingComponent
 import com.githubio.daeun1012.minigithub.view.util.autoCleared
 import dagger.android.support.AndroidSupportInjection
@@ -60,15 +60,14 @@ class LikeFragment : DaggerFragment() {
         ) { user ->
             // save user
             viewModel.likeUser(user)
+            if( activity is MainActivity) {
+                (activity as MainActivity).refreshSearchFragment()
+            }
+
         }
 
         binding.userList.adapter = rvAdapter
         adapter = rvAdapter
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchLikeUser()
     }
 
     private fun initRecyclerView() {
